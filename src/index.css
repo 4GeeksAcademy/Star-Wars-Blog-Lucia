@@ -1,0 +1,66 @@
+/* Star Wars themed styles */
+.card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  border: 1px solid #dee2e6;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-img-top {
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover .card-img-top {
+  transform: scale(1.05);
+}
+
+.btn-warning:hover {
+  transform: scale(1.1);
+}
+
+.dropdown-menu {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Star Wars color theme */
+.text-star-wars-yellow {
+  color: #ffe81f !important;
+}
+
+.bg-star-wars-yellow {
+  background-color: #ffe81f !important;
+}
+
+.text-star-wars-blue {
+  color: #005fcc !important;
+}
+
+.bg-star-wars-blue {
+  background-color: #005fcc !important;
+}
+
+/* Section dividers */
+.section-divider {
+  height: 2px;
+  background: linear-gradient(to right, #dc3545, transparent);
+}
+
+/* Loading animation */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.loading-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
