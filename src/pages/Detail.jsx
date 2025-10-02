@@ -5,7 +5,7 @@ import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 export const Detail = () => {
   const { type, id } = useParams();
   const navigate = useNavigate();
-  const [store, dispatch] = useGlobalReducer();
+  const { store, dispatch } = useGlobalReducer();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +17,7 @@ export const Detail = () => {
         const data = await response.json();
         setItem(data.result);
       } catch (error) {
-        console.error('Error fetching detail:', error);
+        console.error("Error fetching detail:", error);
       } finally {
         setLoading(false);
       }
@@ -27,41 +27,36 @@ export const Detail = () => {
   }, [type, id]);
 
   const handleToggleFavorite = () => {
-    if (!item) return;
-    
+    if (!item || !item.properties) return;
     const favoriteItem = { uid: item.uid, name: item.properties.name, type };
     const isFavorite = store.favorites.some(
-      fav => fav.uid === item.uid && fav.type === type
+      (fav) => fav.uid === item.uid && fav.type === type
     );
-
     if (isFavorite) {
-      dispatch({ type: 'remove_favorite', payload: favoriteItem });
+      dispatch({ type: "remove_favorite", payload: favoriteItem });
     } else {
-      dispatch({ type: 'add_favorite', payload: favoriteItem });
+      dispatch({ type: "add_favorite", payload: favoriteItem });
     }
   };
 
   const getImageUrl = (uid, type) => {
-    const baseUrl = 'https://starwars-visualguide.com/assets/img';
-    if (type === 'people') return `${baseUrl}/characters/${uid}.jpg`;
-    if (type === 'vehicles') return `${baseUrl}/vehicles/${uid}.jpg`;
-    if (type === 'planets') return `${baseUrl}/planets/${uid}.jpg`;
-    return '';
+    const baseUrl = "https://starwars-visualguide.com/assets/img";
+    if (type === "people") return `${baseUrl}/characters/${uid}.jpg`;
+    if (type === "vehicles") return `${baseUrl}/vehicles/${uid}.jpg`;
+    if (type === "planets") return `${baseUrl}/planets/${uid}.jpg`;
+    return "";
   };
 
   const renderProperties = (properties) => {
-    const excludeKeys = ['created', 'edited', 'url'];
-    
+    const excludeKeys = ["created", "edited", "url"];
     return Object.entries(properties)
       .filter(([key]) => !excludeKeys.includes(key))
       .map(([key, value]) => (
         <div key={key} className="row mb-2">
           <div className="col-md-4">
-            <strong>{key.replace(/_/g, ' ').toUpperCase()}:</strong>
+            <strong>{key.replace(/_/g, " ").toUpperCase()}:</strong>
           </div>
-          <div className="col-md-8">
-            {value || 'N/A'}
-          </div>
+          <div className="col-md-8">{value || "N/A"}</div>
         </div>
       ));
   };
@@ -79,7 +74,7 @@ export const Detail = () => {
     );
   }
 
-  if (!item) {
+  if (!item || !item.properties) {
     return (
       <div className="container mt-5">
         <div className="alert alert-danger" role="alert">
@@ -90,13 +85,13 @@ export const Detail = () => {
   }
 
   const isFavorite = store.favorites.some(
-    fav => fav.uid === item.uid && fav.type === type
+    (fav) => fav.uid === item.uid && fav.type === type
   );
 
   const getTypeTitle = (type) => {
-    if (type === 'people') return 'Character';
-    if (type === 'vehicles') return 'Vehicle';
-    if (type === 'planets') return 'Planet';
+    if (type === "people") return "Character";
+    if (type === "vehicles") return "Vehicle";
+    if (type === "planets") return "Planet";
     return type;
   };
 
@@ -104,12 +99,12 @@ export const Detail = () => {
     <div className="container mt-4">
       <div className="row">
         <div className="col-md-6">
-          <img 
-            src={getImageUrl(item.uid, type)} 
+          <img
+            src={getImageUrl(item.uid, type)}
             className="img-fluid rounded"
-            alt={item.properties.name}
+            alt={item.properties?.name || "Unknown"}
             onError={(e) => {
-              e.target.src = `https://via.placeholder.com/600x400/333/fff?text=${item.properties.name}`;
+              e.target.src = `https://via.placeholder.com/600x400/333/fff?text=${item.properties?.name || "Unknown"}`;
             }}
           />
         </div>
@@ -119,11 +114,11 @@ export const Detail = () => {
               <h1 className="display-4">{item.properties.name}</h1>
               <h5 className="text-muted">{getTypeTitle(type)}</h5>
             </div>
-            <button 
-              className={`btn btn-lg ${isFavorite ? 'btn-warning' : 'btn-outline-warning'}`}
+            <button
+              className={`btn btn-lg ${isFavorite ? "btn-warning" : "btn-outline-warning"}`}
               onClick={handleToggleFavorite}
             >
-              <i className={`fas fa-heart ${isFavorite ? '' : 'far'}`}></i>
+              <i className={`fas fa-heart ${isFavorite ? "" : "far"}`}></i>
             </button>
           </div>
 
@@ -135,10 +130,7 @@ export const Detail = () => {
           </div>
 
           <div className="mt-4">
-            <button 
-              className="btn btn-secondary"
-              onClick={() => navigate(-1)}
-            >
+            <button className="btn btn-secondary" onClick={() => navigate(-1)}>
               <i className="fas fa-arrow-left me-2"></i>
               Go Back
             </button>

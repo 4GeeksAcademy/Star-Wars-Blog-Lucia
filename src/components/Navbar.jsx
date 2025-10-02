@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
 const Navbar = () => {
-  const [store, dispatch] = useGlobalReducer();
+  const { store, dispatch } = useGlobalReducer();
   const [showDropdown, setShowDropdown] = useState(false);
 
   const removeFavorite = (favorite) => {
